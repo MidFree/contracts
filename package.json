@@ -6,6 +6,10 @@
   "author": "Takahiro Hirata",
   "license": "MIT",
   "dependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb-base": "^11.3.2",
+    "eslint-plugin-import": "^2.7.0",
     "truffle": "^3.4.9"
   }
 }
