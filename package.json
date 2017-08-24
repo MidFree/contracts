@@ -1,0 +1,11 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:yokkoyokko/contracts.git",
+  "author": "Takahiro Hirata",
+  "license": "MIT",
+  "dependencies": {
+    "truffle": "^3.4.9"
+  }
+}
