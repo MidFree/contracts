@@ -9,7 +9,7 @@ var MidFreeCoinCrowdsale = artifacts.require("./MidFreeCoinCrowdsale.sol");
   // deployer.deploy(MetaCoin);
 // };
 
-module.exports = function(deployer, network, accounts) {
+module.exports = function deployContract(deployer, network, accounts) {
   // クラウドセールが始まるブロックを現在のブロックの2ブロック後に設定
   const startBlock = web3.eth.blockNumber + 2 
   // 終了させるブロックの番号→300だと1時間ちょっと
