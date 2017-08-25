@@ -5,3 +5,6 @@
 
 # tmp file.
 .node-xmlhttprequest*
+
+# depend on mac
+.DS_Store 
