@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 
 import './MidFreeCoin.sol';
-import 'zeppelin-solidity/contracts/crowdsale/Crowdsale.sol';
+import 'zeppelin/contracts/crowdsale/Crowdsale.sol';
 
 
 contract MidFreeCoinCrowdsale is Crowdsale {
