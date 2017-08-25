@@ -10,6 +10,7 @@
     "eslint": "^4.5.0",
     "eslint-config-airbnb-base": "^11.3.2",
     "eslint-plugin-import": "^2.7.0",
+    "ethereumjs-testrpc": "^4.1.1",
     "fs": "^0.0.1-security",
     "truffle": "^3.4.9"
   },

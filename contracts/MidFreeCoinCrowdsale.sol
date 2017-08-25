@@ -1,4 +1,4 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.13;
 
 import './MidFreeCoin.sol';
 import 'zeppelin/contracts/crowdsale/Crowdsale.sol';
