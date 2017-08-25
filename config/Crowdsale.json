@@ -1,0 +1,25 @@
+{
+    // TODO 一旦ALISプロジェクトの数字をそのまま入れておく
+    // 開始ブロック→90万ってどういうこと？？？？直近Ethereumのブロック数は420万くらい
+    "startBlock": 900000,
+    // ICO開始時間(UNIXのタイムスタンプで下記は9月1日)(http://url-c.com/tc/ で変換できる)
+    "icoStartTime": 1504231200,
+    // 終了ブロック
+    "endBlock": 1000000,
+    // ??
+    "cap": 125000,
+    // 全トークン量
+    "tokenCap": 500000000,
+    // 会社側が抱えるトークン量
+    "initialMidfreeFundBalance": 250000000,
+    // 最低到達目標 ehter数
+    "goal": 11666,
+    // EtherとMFCの交換比率
+    "rate": {
+        // 最終週のレート 1Ether = 2000MFC
+      "base": 2000
+    },
+    "whiteList": [
+      // TODO ホワイトリストのアドレス
+    ]
+  }
