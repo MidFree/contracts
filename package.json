@@ -13,6 +13,7 @@
     "truffle": "^3.4.9"
   },
   "scripts": {
+    "lint": "yarn run eslint . -- --fix",
     "clean": "rm -rf ./build/*  && yarn truffle networks --clean",
     "deploy": "yarn run clean && yarn truffle compile && truffle deploy --network development"
   }
