@@ -4,7 +4,7 @@ import './MidFreeCoin.sol';
 import 'zeppelin/contracts/crowdsale/Crowdsale.sol';
 
 
-contract MidFreeCoinCrowdsale is Crowdsale {
+contract MidFreeCoinCrowdsale is WhitelistedCrowdsale {
 
   function MidFreeCoinCrowdsale(uint256 _startBlock, uint256 _endBlock, uint256 _rate, address _wallet) Crowdsale(_startBlock, _endBlock, _rate, _wallet) {
   }
