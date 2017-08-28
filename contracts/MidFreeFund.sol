@@ -2,6 +2,7 @@ pragma solidity ^0.4.13;
 
 import './lib/MultiSigWallet.sol';
 
+
 /**
  * The Multisignature wallet contract of MidFree project.
 */

@@ -9,7 +9,7 @@ contract('MidFreeCoin', (accounts) => {
     ),
   ).then(
     (balance) => {
-        assert.equal(balance.valueOf() / (10 ** 18), 0, `wrong token amount: ${balance.valueOf()}`);
+      assert.equal(balance.valueOf() / (10 ** 18), 0, `wrong token amount: ${balance.valueOf()}`);
     }),
   );
 });
