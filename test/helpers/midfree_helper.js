@@ -2,7 +2,7 @@
 // import alis from '../../utilities/alis';
 // import increaseTime from '../helpers/increaseTime';
 
-const fs = require('fs');
+// const fs = require('fs');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const chaiBigNumber = require('chai-bignumber');
