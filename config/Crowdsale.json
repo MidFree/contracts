@@ -7,7 +7,7 @@
     "endBlock": 1000000,
     "_comment4":"??",
     "cap": 125000,
-    "_comment5":"全トークン量",
+    "_comment5":"トークン量の上限",
     "tokenCap": 500000000,
     "_comment6":"会社側が抱えるトークン量",
     "initialMidfreeFundBalance": 250000000,
@@ -19,5 +19,8 @@
       "base": 2000
     },
     "whiteList": [
+      "0x9f874e3dd3b765430682a62649933acdaae1d424",
+      "0xcfc0545d7e6f2ce0e815a7120aecd485ea466f39",
+      "0xc28b49ab01335f2ccd17146f1cd7d6607ef984e1"
     ]
   }

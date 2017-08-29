@@ -1,0 +1,3 @@
+**/*.sol.js
+truffle.js
+test/helpers/increaseTime.js

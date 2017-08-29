@@ -1,7 +1,7 @@
 {
   "name": "contracts",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "truffle.js",
   "repository": "git@github.com:yokkoyokko/contracts.git",
   "author": "Takahiro Hirata",
   "license": "MIT",
@@ -20,6 +20,7 @@
     "eslint-plugin-import": "^2.7.0",
     "ethereumjs-testrpc": "^4.1.1",
     "fs": "^0.0.1-security",
+    "moment": "^2.18.1",
     "solium": "^0.5.5",
     "truffle": "^3.4.9"
   },
