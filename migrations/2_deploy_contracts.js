@@ -14,7 +14,9 @@ module.exports = function deployContract(deployer) {
   // ファンドのアドレス→マルチシグのものの方がセキュリティ的に良い
   const wallet = web3.eth.accounts[0];
 
-  deployer.deploy(MidFreeCoin, fundParams.owners, fundParams.required).then(() =>
-    deployer.deploy(MidFreeCoinCrowdsale, startBlock, endBlock, rate, wallet),
-  );
+  deployer.deploy(MidFreeCoin, fundParams.owners, fundParams.required);
+  // TODO クラウドセールのクラスも実装してテストできる段階でデプロイする
+  // .then(() =>
+    // deployer.deploy(MidFreeCoinCrowdsale, startBlock, endBlock, rate, wallet),
+  // );
 };

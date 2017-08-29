@@ -2,6 +2,7 @@ pragma solidity ^0.4.13;
 
 import './MidFreeCoin.sol';
 import 'zeppelin/contracts/crowdsale/Crowdsale.sol';
+import './WhitelistedCrowdsale.sol';
 
 
 contract MidFreeCoinCrowdsale is WhitelistedCrowdsale {
