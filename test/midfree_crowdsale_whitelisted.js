@@ -2,7 +2,7 @@ import ether from '../utilities/ether';
 
 import {
   MidFreeCoin, MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate,
-  initialMidFreeFundBalance, goal, setTimingToBaseTokenRate, whiteList
+  initialMidFreeFundBalance, goal, setTimingToBaseTokenRate, whiteList,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([wallet]) => {
