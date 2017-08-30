@@ -1,11 +1,8 @@
-// import alis from '../utilities/alis';
-// import ether from '../utilities/ether';
+import ether from '../utilities/ether';
 
 import {
-//   MidFreeCoin, MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate,
-//   initialMidFreeFundBalance, goal, setTimingToBaseTokenRate, whiteList,
-  MidFreeCoin, MidFreeCoinCrowdsale, rate,
-  initialMidFreeFundBalance, setTimingToBaseTokenRate, whiteList,
+  MidFreeCoin, MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate,
+  initialMidFreeFundBalance, goal, setTimingToBaseTokenRate, whiteList
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([wallet]) => {
@@ -17,12 +14,8 @@ contract('MidFreeCoinCrowdsale', ([wallet]) => {
     this.startBlock = web3.eth.blockNumber + 10;
     this.endBlock = web3.eth.blockNumber + 20;
 
-    // this.crowdsale = await MidFreeCoinCrowdsale.new(this.startBlock, icoStartTime, this.endBlock,
-    //   rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList,
-    // );
-
-    this.crowdsale = await MidFreeCoinCrowdsale.new(this.startBlock, this.endBlock,
-      rate.base, wallet, initialMidFreeFundBalance, whiteList,
+    this.crowdsale = await MidFreeCoinCrowdsale.new(this.startBlock, icoStartTime, this.endBlock,
+      rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList,
     );
 
     this.token = MidFreeCoin.at(await this.crowdsale.token());

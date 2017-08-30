@@ -8,26 +8,21 @@ function ether(n) {
 
 const fs = require('fs');
 
-const MidFreeCoin = artifacts.require('MidFreeCoin.sol');
+const MidFreeFund = artifacts.require('MidFreeFund.sol');
 const MidFreeCoinCrowdsale = artifacts.require('MidFreeCoinCrowdsale.sol');
 const fundParams = JSON.parse(fs.readFileSync('../config/MidFreeFund.json', 'utf8'));
 const crowdsaleParams = JSON.parse(fs.readFileSync('../config/Crowdsale.json', 'utf8'));
 
 module.exports = function deployContract(deployer) {
-  // クラウドセールが始まるブロックを現在のブロックの2ブロック後に設定
-  const startBlock = web3.eth.blockNumber + 2;
-  // 終了させるブロックの番号→300だと1時間ちょっと
-  const endBlock = startBlock + 300;
-  // EtherとMidFreeCoinの価値の比率
-  const rate = new web3.BigNumber(1000);
-  // ファンドのアドレス→マルチシグのものの方がセキュリティ的に良い
-  const wallet = web3.eth.accounts[0];
-
+  const actualCap = web3.toWei(crowdsaleParams.cap, 'ether');
+  const actualTokenCap = ether(crowdsaleParams.tokenCap);
   const actualInitialMidfreeFundBalance = ether(crowdsaleParams.initialMidFreeFundBalance);
+  const actualGoal = web3.toWei(crowdsaleParams.goal, 'ether');
 
-  deployer.deploy(MidFreeCoin, fundParams.owners, fundParams.required).then(() =>
-    deployer.deploy(MidFreeCoinCrowdsale, startBlock, endBlock, rate,
-      wallet, actualInitialMidfreeFundBalance, crowdsaleParams.whiteList),
-    // deployer.deploy(MidFreeCoinCrowdsale,wallet)
+
+  deployer.deploy(MidFreeFund, fundParams.owners, fundParams.required).then(() =>
+    deployer.deploy(MidFreeCoinCrowdsale, crowdsaleParams.startBlock, crowdsaleParams.icoStartTime,
+      crowdsaleParams.endBlock, crowdsaleParams.rate.base, MidFreeFund.address, actualCap,
+      actualTokenCap, actualInitialMidfreeFundBalance, actualGoal, crowdsaleParams.whiteList),
   );
 };
