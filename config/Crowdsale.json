@@ -5,18 +5,18 @@
     "icoStartTime": 1504231200,
     "_comment3":"終了ブロック",
     "endBlock": 1000000,
-    "_comment4":"??",
-    "cap": 125000,
-    "_comment5":"トークン量の上限",
-    "tokenCap": 500000000,
-    "_comment6":"会社側が抱えるトークン量",
-    "initialMidfreeFundBalance": 250000000,
+    "_comment4":"集める上限Ether数",
+    "cap": 10000,
+    "_comment5":"トークン量の上限→最大2200万枚配る",
+    "tokenCap": 122000000,
+    "_comment6":"会社側が抱えるトークン量1億枚保有する(わかりやすいために一旦こう設定する)",
+    "initialMidfreeFundBalance": 100000000,
     "_comment7":"最低到達目標 ehter数",
-    "goal": 11666,
+    "goal": 5000,
     "_comment8":"EtherとMFCの交換比率",
     "rate": {
-      "_comment9":"最終週のレート 1Ether = 2000MFC",
-      "base": 2000
+      "_comment9":"最終週のレート 1Ether = 2200MFC",
+      "base": 2200
     },
     "whiteList": [
       "0x9f874e3dd3b765430682a62649933acdaae1d424",

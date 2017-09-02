@@ -25,6 +25,7 @@
     "truffle": "^3.4.9"
   },
   "scripts": {
+    "test": "scripts/test.sh",
     "test:all": "scripts/test.sh ./test/*.js",
     "lint:sol": "yarn run solium -- --dir ./contracts",
     "lint": "yarn run eslint . -- --fix && yarn lint:sol",
