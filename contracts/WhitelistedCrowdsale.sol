@@ -16,7 +16,8 @@ contract WhitelistedCrowdsale is Crowdsale {
    * Could not add to Crowdsale.json because of EVM said stack too deep.
    * →EVMのスタックが深いからjsonに書かずにここに定義しているという真意がよくわかっていない
    */
-  uint256 constant MAX_WEI_RAISED = 12.5 ether;
+  // uint256 constant MAX_WEI_RAISED = 12.5 ether;
+  uint256 constant MAX_WEI_RAISED = 11 ether;
   // ホワイトリストのマッピング
   mapping (address => bool) public whiteList;
   // ?? 
