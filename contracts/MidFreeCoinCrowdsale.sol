@@ -18,7 +18,7 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
   // ICO start date time.
   uint256 public icoStartTime;
 
-  // The cap amount of ALIS tokens.
+  // The cap amount of MidFree tokens.
   uint256 public tokenCap;
 
   function MidFreeCoinCrowdsale(uint256 _startBlock, uint256 _icoStartTime, uint256 _endBlock, uint256 _rate, address _wallet, uint256 _cap, uint256 _tokenCap, uint256 _initialMidFreeFundBalance, uint256 _goal, address[] _whiteList) 
@@ -48,7 +48,7 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
 
   // overriding CappedCrowdsale#hasEnded to add token cap logic
   // @return true if crowdsale event has ended
-  // TODO ALISの実装を参考にしているがなんで100で割って99かけたものと比較しているのかはよくわからない 
+  // 少しのトークンが余ったとしても途中でfinalizeできるようにしている
   function hasEnded() public constant returns (bool) {
     uint256 threshold = tokenCap.div(100).mul(99);
     bool thresholdReached = token.totalSupply() >= threshold;
@@ -56,7 +56,7 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
   }
 
   // overriding RefundableCrowdsale#finalization
-  // - To store remaining ALIS tokens.
+  // - To store remaining MidFree tokens.
   // - To minting unfinished because of our consensus algorithm.
   function finalization() internal {
     uint256 remaining = tokenCap.sub(token.totalSupply());
@@ -65,7 +65,7 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
       token.mint(wallet, remaining);
     }
 
-    // change AlisToken owner to AlisFund.
+    // change MidfreeCoin owner to MidFreeFund.
     token.transferOwnership(wallet);
 
     // From RefundableCrowdsale#finalization
