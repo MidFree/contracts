@@ -1,18 +1,17 @@
 import moment from 'moment';
-// import alis from '../utilities/alis';
 import ether from '../utilities/ether';
 import advanceToBlock from './helpers/advanceToBlock';
 import increaseTime from './helpers/increaseTime';
 import EVMThrow from './helpers/EVMThrow';
 
 import {
-  MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate, initialMidFreeFundBalance, goal,
-  setTimingToTokenSaleStart,
+  MidFreeCoin, MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate, initialMidFreeFundBalance, goal,
+  setTimingToTokenSaleStart,setTimingToBaseTokenRate,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, notWhiteListedMember]) => {
   const whiteList = [whiteListedMember];
-
+  
   beforeEach(async function () {
     this.startBlock = web3.eth.blockNumber + 10;
     this.endBlock = web3.eth.blockNumber + 20;
@@ -20,6 +19,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
     this.crowdsale = await MidFreeCoinCrowdsale.new(this.startBlock, icoStartTime, this.endBlock,
       rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList,
       { from: owner });
+
   });
 
   describe('creating a valid rate customizable crowdsale', () => {
