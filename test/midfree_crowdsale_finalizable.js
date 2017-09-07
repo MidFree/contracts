@@ -3,7 +3,7 @@ import advanceToBlock from './helpers/advanceToBlock';
 import EVMThrow from './helpers/EVMThrow';
 
 import { MidFreeCoin, MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate,
-  initialMidFreeFundBalance, goal, should, setTimingToBaseTokenRate, whiteList,
+  initialMidFreeFundBalance, goal, should, setTimingToBaseTokenRate, whiteList, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
@@ -47,7 +47,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
     });
     // トークンの上限ちょうどでも確定になる確認
     it('can be finalized when just token cap reached', async function () {
-      const tokenCapOfEther = ether(10000);
+      const tokenCapOfEther = ether(TestConstant.maxETH);
 
       await advanceToBlock(this.startBlock - 1);
       await this.crowdsale.send(tokenCapOfEther);
@@ -89,7 +89,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
       // 22,000,000 - 19,800,000 = 2,200,000
       const remainingTokens = ether(2200000);
 
-      let expect = ether(100000000);
+      let expect = ether(TestConstant.initialFundTokenAmount);
       let actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
 
@@ -102,7 +102,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
     });
     // 投資されない場合の終了時の確認
     it('should not care about goal, to keep code simple', async function () {
-      let expect = ether(100000000);
+      let expect = ether(TestConstant.initialFundTokenAmount);
       let actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
 
@@ -112,7 +112,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
       await advanceToBlock(this.endBlock);
       await this.crowdsale.finalize({ from: owner });
 
-      expect = ether(122000000);
+      expect = ether(TestConstant.allTokenAmount);
       actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
     });
@@ -135,14 +135,14 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
 
       this.token = MidFreeCoin.at(await this.crowdsale.token());
 
-      const expect = ether(100000000);
+      const expect = ether(TestConstant.initialFundTokenAmount);
       let actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
 
       await advanceToBlock(this.startBlock - 1);
 
       // cap reached.
-      await this.crowdsale.send(ether(10000));
+      await this.crowdsale.send(ether(TestConstant.maxETH));
 
       await advanceToBlock(this.endBlock);
       await this.crowdsale.finalize({ from: owner });

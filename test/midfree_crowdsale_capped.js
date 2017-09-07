@@ -1,10 +1,9 @@
-// import alis from '../utilities/alis';
 import ether from '../utilities/ether';
 import advanceToBlock from './helpers/advanceToBlock';
 import EVMThrow from './helpers/EVMThrow';
 
 import { MidFreeCoin, MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate, BigNumber,
-  initialMidFreeFundBalance, goal, whiteList, setTimingToBaseTokenRate,
+  initialMidFreeFundBalance, goal, whiteList, setTimingToBaseTokenRate, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
@@ -13,7 +12,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
   // OfferedValue / base rate = token cap of ether
   // 250,000,000 / 2,000 = 125,000
   // 上限のEther量
-  const tokenCapOfEther = ether(10000);
+  const tokenCapOfEther = ether(TestConstant.maxETH);
 
   // Token cap of ether - ( Token cap / 100 ) / rate = Threshold of ether
   // 125000 - ((500000000 / 100) / 2000) = 122,500
@@ -44,13 +43,13 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
     });
     // 10000Ether以上は集めないので上限の確認
     it('should cap of ETH be 10,000', async function () {
-      const expect = ether(10000);
+      const expect = ether(TestConstant.maxETH);
       const crowdSaleTokenCap = await this.crowdsale.cap();
       await crowdSaleTokenCap.toNumber().should.be.bignumber.equal(expect);
     });
     // 全配布MFCトークン量
     it('should cap of MFC token be 122 million', async function () {
-      const expect = ether(122000000);
+      const expect = ether(TestConstant.allTokenAmount);
       const crowdSaleTokenCap = await this.crowdsale.tokenCap();
       await crowdSaleTokenCap.toNumber().should.be.bignumber.equal(expect);
     });
@@ -108,7 +107,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
       await this.crowdsale.send(lessThanCap).should.be.fulfilled;
 
       const totalSupply = await new BigNumber(await this.token.totalSupply());
-      const actual = await totalSupply.lessThanOrEqualTo(ether(122000000));
+      const actual = await totalSupply.lessThanOrEqualTo(ether(TestConstant.allTokenAmount));
 
       await actual.should.equal(true);
     });
@@ -164,7 +163,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
       await this.crowdsale.send(lessThanCap).should.be.fulfilled;
 
       const totalSupply = await new BigNumber(await this.token.totalSupply());
-      await totalSupply.should.be.bignumber.equal(ether(122000000));
+      await totalSupply.should.be.bignumber.equal(ether(TestConstant.allTokenAmount));
     });
   });
   // 上限に達して終了するテスト
@@ -196,7 +195,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
     it('should not be ended if under token cap threshold', async function () {
       let hasEnded = await this.crowdsale.hasEnded();
       hasEnded.should.equal(false);
-      await this.crowdsale.send(thresholdOfEther.minus(ether(5000)));
+      await this.crowdsale.send(thresholdOfEther.minus(ether(TestConstant.minETH)));
       hasEnded = await this.crowdsale.hasEnded();
       hasEnded.should.equal(false);
     });

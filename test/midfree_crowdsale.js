@@ -3,7 +3,7 @@ import advanceToBlock from './helpers/advanceToBlock';
 import EVMThrow from './helpers/EVMThrow';
 
 import { MidFreeCoin, MidFreeFund, MidFreeCoinCrowdsale, BigNumber, cap, tokenCap, rate, icoStartTime,
-  initialMidFreeFundBalance, should, goal, setTimingToBaseTokenRate, whiteList,
+  initialMidFreeFundBalance, should, goal, setTimingToBaseTokenRate, whiteList, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
@@ -40,20 +40,20 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     });
     // Fundが最初に1億枚のトークンを持っていること
     it('should MidFree fund has 100 million tokens.', async function () {
-      const expect = ether(100000000);
+      const expect = ether(TestConstant.initialFundTokenAmount);
       const actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
     });
     // トータルのトークン量が1億枚であること
     it('should total supply be 100 million tokens.', async function () {
-      const expect = ether(100000000);
+      const expect = ether(TestConstant.initialFundTokenAmount);
       const actual = await this.token.totalSupply();
       await actual.should.be.bignumber.equal(expect);
     });
     // トークンの上限枚数(外部への発行枚数)
     // offering amount = token cap - total supply.
     it('should offering amount be 22 million tokens.', async function () {
-      const expect = ether(22000000);
+      const expect = ether(TestConstant.initialDistributedTokenAmount);
       const totalSupply = await this.token.totalSupply();
       const crowdSaleCap = await this.crowdsale.tokenCap();
       const actual = crowdSaleCap.sub(totalSupply);
@@ -116,7 +116,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     it('should fund has 100 million tokens even if received ether', async function () {
       await advanceToBlock(this.startBlock - 1);
       await this.crowdsale.send(someOfEtherAmount);
-      const expect = ether(100000000);
+      const expect = ether(TestConstant.initialFundTokenAmount);
       const actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
     });
@@ -125,8 +125,8 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     // 100,000,000 + ( 10,000 * 2,200 ) = 122,000,000
     it('should total supply be 122 million tokens after received 10,000 ether', async function () {
       await advanceToBlock(this.startBlock - 1);
-      await this.crowdsale.send(ether(10000));
-      const expect = ether(122000000);
+      await this.crowdsale.send(ether(TestConstant.maxETH));
+      const expect = ether(TestConstant.allTokenAmount);
       const actual = await this.token.totalSupply();
       await actual.should.be.bignumber.equal(expect);
     });

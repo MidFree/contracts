@@ -2,7 +2,7 @@ import ether from '../utilities/ether';
 import EVMThrow from './helpers/EVMThrow';
 
 import { MidFreeCoin, MidFreeCoinCrowdsale, should, cap, tokenCap, rate, icoStartTime,
-  initialMidFreeFundBalance, goal, whiteList,
+  initialMidFreeFundBalance, goal, whiteList, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoin', ([wallet]) => {
@@ -20,7 +20,7 @@ contract('MidFreeCoin', ([wallet]) => {
   });
 
   it('owner should be able to burn tokens', async () => {
-    const { logs } = await token.burn(ether(10000), { from: wallet });
+    const { logs } = await token.burn(ether(TestConstant.maxETH), { from: wallet });
 
     const balance = await token.balanceOf(wallet);
     balance.should.be.bignumber.equal(expectedTokenSupply);
@@ -33,7 +33,7 @@ contract('MidFreeCoin', ([wallet]) => {
   });
 
   it('cannot burn more tokens than your balance', async () => {
-    await token.burn(ether(100000001), { from: wallet })
+    await token.burn(ether(TestConstant.initialFundTokenAmount + 1), { from: wallet })
       .should.be.rejectedWith(EVMThrow);
   });
 });

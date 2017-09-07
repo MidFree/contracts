@@ -1,11 +1,10 @@
-// import alis from '../utilities/alis';
 import ether from '../utilities/ether';
 import advanceToBlock from './helpers/advanceToBlock';
 import EVMThrow from './helpers/EVMThrow';
 
 import {
   MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate, initialMidFreeFundBalance,
-  goal, BigNumber, setTimingToBaseTokenRate, whiteList,
+  goal, BigNumber, setTimingToBaseTokenRate, whiteList, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([owner, wallet, investor, notInvestor]) => {
@@ -34,7 +33,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, investor, notInvestor]) => {
     });
     //  5000ETH獲得時はゴール達成の判定となっている
     it('should goal be 5000 ETH', async function () {
-      const expect = ether(5000);
+      const expect = ether(TestConstant.minETH);
       const actual = await this.crowdsale.goal();
       await actual.should.be.bignumber.equal(expect);
     });
@@ -98,7 +97,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, investor, notInvestor]) => {
 
       // offered amount / base rate = cap reaching amount
       // 250000000 / 2000 = 125000
-      const capReachingAmount = await ether(10000);
+      const capReachingAmount = await ether(TestConstant.maxETH);
       await this.crowdsale.sendTransaction({ value: capReachingAmount, from: investor });
       await advanceToBlock(this.endBlock);
       await this.crowdsale.finalize({ from: owner });

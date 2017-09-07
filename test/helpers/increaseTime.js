@@ -4,7 +4,7 @@
 
 // Increases testrpc time by the passed duration (a moment.js instance)
 // JSONRPC経由でtestrpcの時間を経過させる処理を呼んでいる
-// 完了後にmine処理でブロック作成まで終わらせている(?)
+// 完了後にmine処理でブロック作成まで終わらせている
 export default function increaseTime(duration) {
   const id = Date.now();
 

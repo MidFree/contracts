@@ -6,7 +6,7 @@ import EVMThrow from './helpers/EVMThrow';
 
 import {
   MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate, initialMidFreeFundBalance, goal,
-  setTimingToTokenSaleStart,
+  setTimingToTokenSaleStart, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, notWhiteListedMember]) => {
@@ -23,7 +23,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
 
   describe('creating a valid rate customizable crowdsale', () => {
     it('should initial rate be 20,000 MidFreeCoin for pre sale', async function () {
-      const expect = 20000; // pre sale
+      const expect = TestConstant.preSaleRate; // pre sale
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -102,12 +102,12 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
   describe('Week1', () => {
     // 22,000,000 / 500 = 44000
     // const nearTokenCapOfEther = ether(44000);
-    const nearTokenCapOfEther = ether(10000);// そもそもの上限が10,000
+    const nearTokenCapOfEther = ether(TestConstant.maxETH);// そもそもの上限が10,000
 
     it('should rate of week1 be 500 MidFree when just started', async function () {
       await setTimingToTokenSaleStart();
 
-      const expect = 500;
+      const expect = TestConstant.week1Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -117,7 +117,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const duration = 60;
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 500;
+      const expect = TestConstant.week1Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -148,7 +148,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const duration = (60 * 60 * 24 * 7) - 120; // 1 week - 2 minute.
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 500;
+      const expect = TestConstant.week1Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -158,13 +158,13 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
   describe('Week2', () => {
     // 22,000,000 / 1,000 = 22,000
     // const nearTokenCapOfEther = ether(22000);
-    const nearTokenCapOfEther = ether(10000);// そもそもの上限が10,000
+    const nearTokenCapOfEther = ether(TestConstant.maxETH);// そもそもの上限が10,000
 
     it('should rate of week2 be 1,000 MidFreeCoin when just started', async function () {
       const duration = 60;
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 1000;
+      const expect = TestConstant.week2Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -174,7 +174,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const duration = 60;
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 1000;
+      const expect = TestConstant.week2Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -206,7 +206,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const duration = (60 * 60 * 24 * 7) - 600; // 1 week - 10 minute.
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 1000;
+      const expect = TestConstant.week2Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -216,13 +216,13 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
   describe('Week3', () => {
     // 22,000,000 / 1,800 = 12222.2222222
     // const nearTokenCapOfEther = ether(12222);
-    const nearTokenCapOfEther = ether(10000);// そもそもの上限が1万
+    const nearTokenCapOfEther = ether(TestConstant.maxETH);// そもそもの上限が1万
 
     it('should rate of week3 be 1,800 MidFreeCoin when just started', async function () {
       const duration = 600;
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 1800;
+      const expect = TestConstant.week3Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -232,7 +232,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const duration = 60;
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 1800;
+      const expect = TestConstant.week3Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -264,7 +264,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const duration = (60 * 60 * 24 * 7) - 600; // 1 week - 10 minute.
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 1800;
+      const expect = TestConstant.week3Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -273,13 +273,13 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
 
   describe('From week4 to until the end of token sale', () => {
     // 22,000,000 / 2,200 = 10000
-    const maxEtherAmount = ether(10000);
+    const maxEtherAmount = ether(TestConstant.maxETH);
 
     it('should rate of week4 be 2,200 MidFreeCoin when just started', async function () {
       const duration = 1200;
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 2200;
+      const expect = TestConstant.week4Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -289,7 +289,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const duration = 60;
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 2200;
+      const expect = TestConstant.week4Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);
@@ -321,7 +321,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const duration = (60 * 60 * 24 * 7) - 1800; // 1 week - 30 minute.
       await increaseTime(moment.duration(duration, 'second'));
 
-      const expect = 2200;
+      const expect = TestConstant.week4Rate;
       await advanceToBlock(this.endBlock - 1);
       const actual = await this.crowdsale.getRate();
       await actual.should.be.bignumber.equal(expect);

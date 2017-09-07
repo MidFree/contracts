@@ -1,5 +1,4 @@
 import moment from 'moment';
-// import alis from '../../utilities/alis';
 import ether from '../../utilities/ether';
 import increaseTime from '../helpers/increaseTime';
 
@@ -11,6 +10,8 @@ const chaiBigNumber = require('chai-bignumber');
 const crowdsaleParams = JSON.parse(fs.readFileSync('./config/Crowdsale.json', 'utf8'));
 
 // exports
+export const TestConstant = JSON.parse(fs.readFileSync('./test/helpers/TestConstant.json', 'utf8'));
+
 
 export const BigNumber = web3.BigNumber;
 export const should = chai

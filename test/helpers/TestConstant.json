@@ -1,0 +1,12 @@
+{
+    "minETH" : 5000,
+    "maxETH" : 10000,
+    "preSaleRate" : 20000,
+    "week1Rate" : 500,
+    "week2Rate" : 1000,
+    "week3Rate" : 1800,
+    "week4Rate" : 2200,
+    "allTokenAmount" : 122000000,
+    "initialFundTokenAmount" : 100000000,
+    "initialDistributedTokenAmount" : 22000000
+}
