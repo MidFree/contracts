@@ -7,7 +7,7 @@ import { MidFreeCoin, MidFreeCoinCrowdsale, should, cap, tokenCap, rate, icoStar
 
 contract('MidFreeCoin', ([wallet]) => {
   let token;
-  const expectedTokenSupply = ether(99990000);
+  const expectedTokenSupply = ether(49958334);
 
   beforeEach(async function () {
     this.startBlock = web3.eth.blockNumber + 10;

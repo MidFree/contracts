@@ -10,10 +10,10 @@ import './MidFreeCoin.sol';
 
 contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, WhitelistedCrowdsale, Pausable {
 
-  uint256 constant RATE_PRE_SALE = 20000;
-  uint256 constant RATE_WEEK_1 = 500;
-  uint256 constant RATE_WEEK_2 = 1000;
-  uint256 constant RATE_WEEK_3 = 1800;
+  uint256 constant RATE_PRE_SALE = 50000;
+  uint256 constant RATE_WEEK_1 = 1500;
+  uint256 constant RATE_WEEK_2 = 1400;
+  uint256 constant RATE_WEEK_3 = 1300;
 
   // ICO start date time.
   uint256 public icoStartTime;
@@ -109,24 +109,22 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
   // This is created to compatible PR below:
   // - https://github.com/OpenZeppelin/zeppelin-solidity/pull/317
   function getRate() constant returns (uint256) {
-    // TODO レート計算は後からちゃんと計算する
-
     uint256 currentRate = rate;
 
     // // We decided using `now` alias of `block.timestamp` instead `block.number`
     // // Because of same reason:
     // // - https://github.com/OpenZeppelin/zeppelin-solidity/issues/350
     if (isPresale()) {
-      // before 2017/09/01 02:00 UTC
+      // before 2017/11/01 02:00 UTC
       currentRate = RATE_PRE_SALE;
     } else if (now <= icoStartTime.add(1 weeks)) {
-      // before 2017/09/08 02:00 UTC
+      // before 2017/11/08 02:00 UTC
       currentRate = RATE_WEEK_1;
     } else if (now <= icoStartTime.add(2 weeks)) {
-      // before 2017/09/15 02:00 UTC
+      // before 2017/11/15 02:00 UTC
       currentRate = RATE_WEEK_2;
     } else if (now <= icoStartTime.add(3 weeks)) {
-      // before 2017/09/21 02:00 UTC
+      // before 2017/11/21 02:00 UTC
       currentRate = RATE_WEEK_3;
     }
 

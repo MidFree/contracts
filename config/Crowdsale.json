@@ -6,17 +6,17 @@
     "_comment3":"終了ブロック",
     "endBlock": 1000000,
     "_comment4":"集める上限Ether数",
-    "cap": 10000,
-    "_comment5":"トークン量の上限→最大2200万枚配る",
-    "tokenCap": 122000000,
-    "_comment6":"会社側が抱えるトークン量1億枚保有する(わかりやすいために一旦こう設定する)",
-    "initialMidfreeFundBalance": 100000000,
+    "cap": 41666,
+    "_comment5":"トークン量の上限(1億枚)",
+    "tokenCap": 100000000,
+    "_comment6":"会社側が抱えるトークン量4750万枚保有する(1億枚のうち最大配った残り)",
+    "initialMidfreeFundBalance": 50000000,
     "_comment7":"最低到達目標 ehter数",
-    "goal": 5000,
+    "goal": 7500,
     "_comment8":"EtherとMFCの交換比率",
     "rate": {
-      "_comment9":"最終週のレート 1Ether = 2200MFC",
-      "base": 2200
+      "_comment9":"最終週のレート 1Ether = 1200MFC",
+      "base": 1200
     },
     "whiteList": [
       "0x9f874e3dd3b765430682a62649933acdaae1d424",

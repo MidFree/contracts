@@ -31,15 +31,15 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, investor, notInvestor]) => {
         whiteList, { from: owner })
         .should.be.rejectedWith(EVMThrow);
     });
-    //  5000ETH獲得時はゴール達成の判定となっている
-    it('should goal be 5000 ETH', async function () {
+    //  7500ETH獲得時はゴール達成の判定となっている
+    it('should goal be 7500 ETH', async function () {
       const expect = ether(TestConstant.minETH);
       const actual = await this.crowdsale.goal();
       await actual.should.be.bignumber.equal(expect);
     });
-    // ゴール達成時に2億円獲得計算となっている
-    it('should goal be 200,000,000 JPY', async () => {
-      const goalAsJPY = new BigNumber(200000000); // 約2億円
+    // ゴール達成時に3億円獲得計算となっている
+    it('should goal be 300,000,000 JPY', async () => {
+      const goalAsJPY = new BigNumber(300000000); // 約3億円
       const expectedEtherPrice = new BigNumber(40000); // 4万円
       const convertedGoal = expectedEtherPrice.times(goal);
       await goalAsJPY.should.be.bignumber.equal(convertedGoal);
@@ -96,7 +96,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, investor, notInvestor]) => {
       await advanceToBlock(this.startBlock - 1);
 
       // offered amount / base rate = cap reaching amount
-      // 250000000 / 2000 = 125000
+      // 50000000 / 1200 = 41666
       const capReachingAmount = await ether(TestConstant.maxETH);
       await this.crowdsale.sendTransaction({ value: capReachingAmount, from: investor });
       await advanceToBlock(this.endBlock);

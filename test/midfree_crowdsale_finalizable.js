@@ -9,8 +9,8 @@ import { MidFreeCoin, MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate,
 contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
   // Token cap of ether - ( Token cap / 100 ) / rate = Threshold of ether
   // 125000 - ((500000000 / 100) / 2000) = 122,500
-  // 10000 - ((122000000/100)/2200) =9445.4545
-  const thresholdOfEther = ether(9446);
+  // 41666 - ((100000000/100)/1200) =40833.6666667
+  const thresholdOfEther = ether(40834);
 
   before(async () => {
     await setTimingToBaseTokenRate();
@@ -82,12 +82,12 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
       await advanceToBlock(this.startBlock - 1);
 
       // ether * rate = sold amount
-      // 9,000 * 2,200 = 19,800,000
-      await this.crowdsale.send(ether(9000));
+      // 30,000 * 1,200 = 36,000,000
+      await this.crowdsale.send(ether(30000));
 
       // offered amount - sold amount = remain
-      // 22,000,000 - 19,800,000 = 2,200,000
-      const remainingTokens = ether(2200000);
+      // 50,000,000 - 36,000,000 = 14,000,000
+      const remainingTokens = ether(14000000);
 
       let expect = ether(TestConstant.initialFundTokenAmount);
       let actual = await this.token.balanceOf(wallet);
@@ -135,7 +135,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
 
       this.token = MidFreeCoin.at(await this.crowdsale.token());
 
-      const expect = ether(TestConstant.initialFundTokenAmount);
+      const expect = ether(TestConstant.initialFundTokenAmount).plus(ether(800));
       let actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
 

@@ -17,7 +17,7 @@ contract WhitelistedCrowdsale is Crowdsale {
    * →EVMのスタックが深いからjsonに書かずにここに定義しているという真意がよくわかっていない
    */
   // uint256 constant MAX_WEI_RAISED = 12.5 ether;
-  uint256 constant MAX_WEI_RAISED = 11 ether;
+  uint256 constant MAX_WEI_RAISED = 10 ether;
   // ホワイトリストのマッピング
   mapping (address => bool) public whiteList;
   // ?? 
@@ -32,7 +32,7 @@ contract WhitelistedCrowdsale is Crowdsale {
   }
 
   // check token amount limitation of member.
-  // アドレス送信者に追加した時に12.5etherを超えるとrevertしている。なんで？
+  // アドレス送信者に追加した時に12.5etherを超えるとrevertしている。
   function checkLimit(uint256 _weiAmount) internal {
     if ( memberWeiRaised[msg.sender].add(msg.value) > MAX_WEI_RAISED ) {
       revert();

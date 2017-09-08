@@ -1,5 +1,3 @@
-// import ether from '../utilities/ether';
-// FIXME: merge to utility.
 // 構文上インポートできないため重複して記述
 function ether(n) {
   return new web3.BigNumber(web3.toWei(n, 'ether'));

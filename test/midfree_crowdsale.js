@@ -38,8 +38,8 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     it('should token be instance of MidFreeCoin', async function () {
       this.token.should.be.an.instanceof(MidFreeCoin);
     });
-    // Fundが最初に1億枚のトークンを持っていること
-    it('should MidFree fund has 100 million tokens.', async function () {
+    // Fundが最初に4750万枚のトークンを持っていること
+    it('should MidFree fund has 47.5 million tokens.', async function () {
       const expect = ether(TestConstant.initialFundTokenAmount);
       const actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
@@ -52,7 +52,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     });
     // トークンの上限枚数(外部への発行枚数)
     // offering amount = token cap - total supply.
-    it('should offering amount be 22 million tokens.', async function () {
+    it('should offering amount be 50 million tokens.', async function () {
       const expect = ether(TestConstant.initialDistributedTokenAmount);
       const totalSupply = await this.token.totalSupply();
       const crowdSaleCap = await this.crowdsale.tokenCap();
@@ -112,21 +112,21 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
   });
   // トークン量のテスト
   describe('token amount adjustments', () => {
-    // Etherを受け取ってもfundが1億枚持っているままである
-    it('should fund has 100 million tokens even if received ether', async function () {
+    // Etherを受け取ってもfundが5000万枚持っているままである
+    it('should fund has 50 million tokens even if received ether', async function () {
       await advanceToBlock(this.startBlock - 1);
       await this.crowdsale.send(someOfEtherAmount);
       const expect = ether(TestConstant.initialFundTokenAmount);
       const actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
     });
-    // 10,000Ether受け取り後には全体トークン量が12200万枚になっている
+    // 41,666Ether受け取り後には全体トークン量が1億枚になっている
     // initial + ( received ether * decimals ) = total supply
-    // 100,000,000 + ( 10,000 * 2,200 ) = 122,000,000
-    it('should total supply be 122 million tokens after received 10,000 ether', async function () {
+    // 50,000,000 + ( 41,666 * 1,200 ) = 99,999,200
+    it('should total supply be 100 million tokens after received 41,666 ether', async function () {
       await advanceToBlock(this.startBlock - 1);
       await this.crowdsale.send(ether(TestConstant.maxETH));
-      const expect = ether(TestConstant.allTokenAmount);
+      const expect = ether(TestConstant.allTokenAmount).minus(ether(800));
       const actual = await this.token.totalSupply();
       await actual.should.be.bignumber.equal(expect);
     });
