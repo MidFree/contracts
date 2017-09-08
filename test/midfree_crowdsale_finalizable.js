@@ -135,7 +135,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
 
       this.token = MidFreeCoin.at(await this.crowdsale.token());
 
-      const expect = ether(TestConstant.initialFundTokenAmount).plus(ether(800));
+      const expect = ether(TestConstant.initialFundTokenAmount);
       let actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
 
@@ -148,7 +148,8 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
       await this.crowdsale.finalize({ from: owner });
 
       actual = await this.token.balanceOf(wallet);
-      await actual.should.be.bignumber.equal(expect);
+      // MAXのetherを送って800MFC余るため
+      await actual.should.be.bignumber.equal(expect.plus(ether(800)));
     });
   });
   // 確定が拒否される場合
