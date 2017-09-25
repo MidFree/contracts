@@ -2,14 +2,14 @@
     "_comment1":"開始ブロック→90万ってどういうこと？？？？直近Ethereumのブロック数は420万くらい",
     "startBlock": 900000,
     "_comment2":"ICO開始時間(UNIXのタイムスタンプで下記は11月1日)(http://url-c.com/tc/ で変換できる)",
-    "icoStartTime": 1509501600,
+    "icoStartTime": 1505983800,
     "_comment3":"終了ブロック",
     "endBlock": 1000000,
     "_comment4":"集める上限Ether数",
     "cap": 41666,
     "_comment5":"トークン量の上限(1億枚)",
     "tokenCap": 100000000,
-    "_comment6":"会社側が抱えるトークン量4750万枚保有する(1億枚のうち最大配った残り)",
+    "_comment6":"会社側が抱えるトークン量5000万枚保有する(1億枚のうち最大配った残り)",
     "initialMidfreeFundBalance": 50000000,
     "_comment7":"最低到達目標 ehter数",
     "goal": 7500,
@@ -19,8 +19,8 @@
       "base": 1200
     },
     "whiteList": [
-      "0x9f874e3dd3b765430682a62649933acdaae1d424",
-      "0xcfc0545d7e6f2ce0e815a7120aecd485ea466f39",
-      "0xc28b49ab01335f2ccd17146f1cd7d6607ef984e1"
+      "0x57dbf8aae0baef5801a22a874855c626a89ce876",
+      "0x7b0225b02beb70e32975cc9a0b0e034a7355c178",
+      "0xca0fe5f095dec8c027e8b3f66114d9846c0dc91b"
     ]
   }
