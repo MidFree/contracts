@@ -2,7 +2,7 @@
     "_comment1":"開始ブロック→90万ってどういうこと？？？？直近Ethereumのブロック数は420万くらい",
     "startBlock": 900000,
     "_comment2":"ICO開始時間(UNIXのタイムスタンプで下記は11月1日)(http://url-c.com/tc/ で変換できる)",
-    "icoStartTime": 1505983800,
+    "icoStartTime": 1512093600,
     "_comment3":"終了ブロック",
     "endBlock": 1000000,
     "_comment4":"集める上限Ether数",
