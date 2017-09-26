@@ -21,6 +21,6 @@ module.exports = function deployContract(deployer) {
   deployer.deploy(MidFreeFund, fundParams.owners, fundParams.required).then(() =>
     deployer.deploy(MidFreeCoinCrowdsale, crowdsaleParams.icoStartTime,
       crowdsaleParams.icoEndTime, crowdsaleParams.rate.base, MidFreeFund.address, actualCap,
-      actualTokenCap, actualInitialMidfreeFundBalance, actualGoal, crowdsaleParams.whiteList),
+      actualTokenCap, actualInitialMidfreeFundBalance, actualGoal),
   );
 };

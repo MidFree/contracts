@@ -5,7 +5,7 @@ import latestTime from './helpers/latestTime';
 import EVMThrow from './helpers/EVMThrow';
 
 import { MidFreeCoin, MidFreeFund, MidFreeCoinCrowdsale, BigNumber, cap, tokenCap, rate,
-  initialMidFreeFundBalance, should, goal, whiteList, TestConstant,
+  initialMidFreeFundBalance, should, goal, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
@@ -23,7 +23,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     this.endTime = this.startTime + duration.weeks(4);
     this.afterEndTime = this.endTime + duration.seconds(1);
     this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
-      rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList);
+      rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal));
     this.token = MidFreeCoin.at(await this.crowdsale.token());
   });
   // クラウドセールの初期化のテスト

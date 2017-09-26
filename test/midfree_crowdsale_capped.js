@@ -5,7 +5,7 @@ import latestTime from './helpers/latestTime';
 import EVMThrow from './helpers/EVMThrow';
 
 import { MidFreeCoin, MidFreeCoinCrowdsale, cap, tokenCap, rate, BigNumber,
-  initialMidFreeFundBalance, goal, whiteList, TestConstant,
+  initialMidFreeFundBalance, goal, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
@@ -32,7 +32,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
     this.afterEndTime = this.endTime + duration.seconds(1);
 
     this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
-      rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList);
+      rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal));
 
     this.token = MidFreeCoin.at(await this.crowdsale.token());
   });
@@ -42,10 +42,10 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
     // 0でキャップするとエラーになること
     it('should fail with zero cap', async function () {
       await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
-        rate.base, wallet, 0, initialMidFreeFundBalance, ether(goal), whiteList)
+        rate.base, wallet, 0, initialMidFreeFundBalance, ether(goal))
         .should.be.rejectedWith(EVMThrow);
     });
-    // 35000Ether以上は集めないので上限の確認
+    // 41667Ether以上は集めないので上限の確認
     it('should cap of ETH be 41,667', async function () {
       const expect = ether(TestConstant.maxETH);
       const crowdSaleTokenCap = await this.crowdsale.cap();

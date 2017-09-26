@@ -5,7 +5,7 @@ import latestTime from './helpers/latestTime';
 import EVMThrow from './helpers/EVMThrow';
 
 import { MidFreeCoin, MidFreeCoinCrowdsale, cap, tokenCap, rate,
-  initialMidFreeFundBalance, goal, should, whiteList, TestConstant,
+  initialMidFreeFundBalance, goal, should, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
@@ -26,7 +26,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
 
     this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
       rate.base, wallet, ether(cap), ether(tokenCap),
-      initialMidFreeFundBalance, ether(goal), whiteList, { from: owner });
+      initialMidFreeFundBalance, ether(goal), { from: owner });
 
     this.token = MidFreeCoin.at(await this.crowdsale.token());
   });
@@ -136,7 +136,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, thirdparty]) => {
       const capSameAsInitialMidFreeFundBalance = initialMidFreeFundBalance;
       this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
         rate.base, wallet, capSameAsInitialMidFreeFundBalance, ether(tokenCap), initialMidFreeFundBalance,
-        ether(goal), whiteList, { from: owner });
+        ether(goal), { from: owner });
 
       this.token = MidFreeCoin.at(await this.crowdsale.token());
 

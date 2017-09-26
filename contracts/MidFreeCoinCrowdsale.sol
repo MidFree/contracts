@@ -4,11 +4,10 @@ import 'zeppelin/contracts/crowdsale/CappedCrowdsale.sol';
 import 'zeppelin/contracts/crowdsale/RefundableCrowdsale.sol';
 import 'zeppelin/contracts/token/MintableToken.sol';
 import 'zeppelin/contracts/lifecycle/Pausable.sol';
-import './WhitelistedCrowdsale.sol';
 import './MidFreeCoin.sol';
 
 
-contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, WhitelistedCrowdsale, Pausable {
+contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Pausable {
 
   uint256 constant RATE_PRE_SALE = 50000;
   uint256 constant RATE_WEEK_1 = 1500;
@@ -21,11 +20,10 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
   // The cap amount of MidFree tokens.
   uint256 public tokenCap;
 
-  function MidFreeCoinCrowdsale(uint256 _icoStartTime, uint256 _icoEndTime, uint256 _rate, address _wallet, uint256 _cap, uint256 _tokenCap, uint256 _initialMidFreeFundBalance, uint256 _goal, address[] _whiteList) 
+  function MidFreeCoinCrowdsale(uint256 _icoStartTime, uint256 _icoEndTime, uint256 _rate, address _wallet, uint256 _cap, uint256 _tokenCap, uint256 _initialMidFreeFundBalance, uint256 _goal) 
   Crowdsale(_icoStartTime, _icoEndTime, _rate, _wallet) 
   CappedCrowdsale(_cap)
   RefundableCrowdsale(_goal)
-  WhitelistedCrowdsale(_whiteList)
   {
     icoStartTime = _icoStartTime;
     tokenCap = _tokenCap;
@@ -87,11 +85,6 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
 
     uint256 weiAmount = msg.value;
 
-    // for presale
-    if ( isPresale() ) {
-      checkLimit(weiAmount);
-    }
-
     // calculate token amount to be created
     uint256 tokens = weiAmount.mul(getRate());
 
@@ -133,7 +126,7 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
 
   // @return true if crowd sale is accepting.
   function saleAccepting() internal constant returns (bool) {
-    return !isPresale() || isWhiteListMember(msg.sender);
+    return !isPresale();
   }
 
   // @return true if crowd sale is pre sale.

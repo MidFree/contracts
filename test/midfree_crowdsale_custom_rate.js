@@ -9,9 +9,7 @@ import {
   TestConstant,
 } from './helpers/midfree_helper';
 
-contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, notWhiteListedMember]) => {
-  const whiteList = [whiteListedMember];
-
+contract('MidFreeCoinCrowdsale', ([investor, owner, wallet]) => {
   before(async () => {
     // Advance to the next block to correctly read time in the solidity "now" function interpreted by testrpc
     await advanceBlock();
@@ -24,7 +22,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
     this.afterEndTime = this.endTime + duration.seconds(1);
 
     this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
-      rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList,
+      rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal),
       { from: owner });
   });
 
@@ -42,7 +40,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
     // テストのプレセール期間はホワイトリストからの購入でないとリジェクト
     it('should reject payments if not white listed member', async function () {
       await increaseTimeTo(this.beforeStartTime);
-      await this.crowdsale.buyTokens(investor, { value: someOfEtherAmount, from: notWhiteListedMember })
+      await this.crowdsale.buyTokens(investor, { value: someOfEtherAmount, from: investor })
         .should.be.rejectedWith(EVMThrow);
     });
     // プレセールでリジェクトされてもETHは失わない
@@ -57,58 +55,6 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       const afterRejected = web3.eth.getBalance(investor);
       await afterRejected.should.be.bignumber.equal(beforeSend);
     });
-    // // ホワイトリストメンバーならトークン購入できる
-    // it('should accept payments if white listed member', async function () {
-    //   // await advanceToBlock(this.startBlock - 1);
-    //   await increaseTimeTo(this.beforeStartTime);
-    //   await this.crowdsale.buyTokens(whiteListedMember, { value: someOfEtherAmount, from: whiteListedMember })
-    //     .should.be.fulfilled;
-    // });
-    // // 上限より1トークン少ないテスト
-    // it('should accept payments 499,999 MidFree tokens', async function () {
-    //   // await advanceToBlock(this.startBlock - 1);
-    //   await increaseTimeTo(this.beforeStartTime);
-    //   // ether * rate of pre sale = MidFree tokens.
-    //   // 9.99998 * 50,000 = 499,999
-    //   const etherAmount = await ether(9.99998);
-    //   await this.crowdsale.buyTokens(whiteListedMember, { value: etherAmount, from: whiteListedMember })
-    //     .should.be.fulfilled;
-    // });
-    // // 上限ちょうどのテスト
-    // it('should accept payments 500,000 MidFree tokens', async function () {
-    //   // await advanceToBlock(this.startBlock - 1);
-    //   await increaseTimeTo(this.beforeStartTime);
-    //   // ether * rate of pre sale = MidFree tokens.
-    //   // 10 * 50,000 = 500,000
-    //   const etherAmount = await ether(10);
-    //   await this.crowdsale.buyTokens(whiteListedMember, { value: etherAmount, from: whiteListedMember })
-    //     .should.be.fulfilled;
-    // });
-    // // 上限を1トークン超えた場合のテスト
-    // it('should reject payments 500,001 MidFree tokens', async function () {
-    //   // await advanceToBlock(this.startBlock - 1);
-    //   await increaseTimeTo(this.beforeStartTime);
-    //   // ether * rate of pre sale = MidFree tokens.
-    //   // 10.00002 * 50,000 = 500,001
-    //   const etherAmount = await ether(10.00002);
-    //   await this.crowdsale.buyTokens(whiteListedMember, { value: etherAmount, from: whiteListedMember })
-    //     .should.be.rejectedWith(EVMThrow);
-    // });
-
-    // it('should not lose ETH if payments 500,001 MidFree tokens', async function () {
-    //   // await advanceToBlock(this.startBlock - 1);
-    //   await increaseTimeTo(this.beforeStartTime);
-    //   const beforeSend = web3.eth.getBalance(whiteListedMember);
-
-    //   // ether * rate of pre sale = MidFree tokens.
-    //   // 10.00002 * 50,000 = 500,001
-    //   const etherAmount = await ether(10.00002);
-    //   await this.crowdsale.buyTokens(whiteListedMember, { value: etherAmount, from: whiteListedMember, gasPrice: 0 })
-    //     .should.be.rejectedWith(EVMThrow);
-
-    //   const afterRejected = web3.eth.getBalance(whiteListedMember);
-    //   await afterRejected.should.be.bignumber.equal(beforeSend);
-    // });
   });
 
   describe('Week1', () => {
@@ -291,6 +237,7 @@ contract('MidFreeCoinCrowdsale', ([investor, owner, wallet, whiteListedMember, n
       await this.crowdsale.buyTokens(investor, { value: maxEtherAmount })
         .should.be.fulfilled;
     });
+
 
     it('should reject payments over 50,000,000 MidFree tokens', async function () {
       await increaseTimeTo(this.startTime + duration.weeks(3));

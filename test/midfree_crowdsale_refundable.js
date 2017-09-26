@@ -6,7 +6,7 @@ import EVMThrow from './helpers/EVMThrow';
 
 import {
   MidFreeCoinCrowdsale, cap, tokenCap, rate, initialMidFreeFundBalance,
-  goal, BigNumber, whiteList, TestConstant,
+  goal, BigNumber, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([owner, wallet, investor, notInvestor]) => {
@@ -24,7 +24,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, investor, notInvestor]) => {
 
     this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
       rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance
-      , ether(goal), whiteList, { from: owner });
+      , ether(goal), { from: owner });
   });
   // クラウドセールの返金手続きの仕組みのテスト
   describe('creating a valid refundable crowdsale', () => {
@@ -32,7 +32,7 @@ contract('MidFreeCoinCrowdsale', ([owner, wallet, investor, notInvestor]) => {
     it('should fail with zero goal', async function () {
       await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
         rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, 0,
-        whiteList, { from: owner })
+        { from: owner })
         .should.be.rejectedWith(EVMThrow);
     });
     //  7500ETH獲得時はゴール達成の判定となっている
