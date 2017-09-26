@@ -1,9 +1,11 @@
 import ether from '../utilities/ether';
-import advanceToBlock from './helpers/advanceToBlock';
+import { advanceBlock } from './helpers/advanceToBlock';
+import { increaseTimeTo, duration } from './helpers/increaseTime';
+import latestTime from './helpers/latestTime';
 import EVMThrow from './helpers/EVMThrow';
 
-import { MidFreeCoin, MidFreeFund, MidFreeCoinCrowdsale, BigNumber, cap, tokenCap, rate, icoStartTime,
-  initialMidFreeFundBalance, should, goal, setTimingToBaseTokenRate, whiteList, TestConstant,
+import { MidFreeCoin, MidFreeFund, MidFreeCoinCrowdsale, BigNumber, cap, tokenCap, rate,
+  initialMidFreeFundBalance, should, goal, whiteList, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
@@ -12,16 +14,16 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
   const expectedInitialTokenAmount = expectedTokenAmount.add(initialMidFreeFundBalance);
 
   before(async () => {
-    await setTimingToBaseTokenRate();
+    await advanceBlock();
   });
 
   beforeEach(async function () {
-    this.startBlock = web3.eth.blockNumber + 10;
-    this.endBlock = web3.eth.blockNumber + 20;
-
-    this.crowdsale = await MidFreeCoinCrowdsale.new(this.startBlock, icoStartTime, this.endBlock,
+    this.beforeStartTime = latestTime() + duration.weeks(1);
+    this.startTime = this.beforeStartTime + duration.weeks(1);
+    this.endTime = this.startTime + duration.weeks(4);
+    this.afterEndTime = this.endTime + duration.seconds(1);
+    this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
       rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList);
-
     this.token = MidFreeCoin.at(await this.crowdsale.token());
   });
   // クラウドセールの初期化のテスト
@@ -38,8 +40,8 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     it('should token be instance of MidFreeCoin', async function () {
       this.token.should.be.an.instanceof(MidFreeCoin);
     });
-    // Fundが最初に4750万枚のトークンを持っていること
-    it('should MidFree fund has 47.5 million tokens.', async function () {
+    // Fundが最初に5000万枚のトークンを持っていること
+    it('should MidFree fund has 50 million tokens.', async function () {
       const expect = ether(TestConstant.initialFundTokenAmount);
       const actual = await this.token.balanceOf(wallet);
       await actual.should.be.bignumber.equal(expect);
@@ -87,20 +89,20 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     });
     // 開始後は送金を受け付ける
     it('should accept payments after start', async function () {
-      await advanceToBlock(this.startBlock - 1);
+      await increaseTimeTo(this.startTime);
       await this.crowdsale.send(someOfEtherAmount).should.be.fulfilled;
       await this.crowdsale.buyTokens(investor, { value: someOfEtherAmount, from: purchaser }).should.be.fulfilled;
     });
     // 終了後は送金をrejectする
     it('should reject payments after end', async function () {
-      await advanceToBlock(this.endBlock);
+      await increaseTimeTo(this.afterEndTime);
       await this.crowdsale.send(someOfEtherAmount).should.be.rejectedWith(EVMThrow);
       await this.crowdsale.buyTokens(investor, { value: someOfEtherAmount, from: purchaser })
         .should.be.rejectedWith(EVMThrow);
     });
     // 終了後に送金をrejectしてもETHを失わない
     it('should not lose ETH if payments were rejected after end', async function () {
-      await advanceToBlock(this.endBlock);
+      await increaseTimeTo(this.afterEndTime);
       const beforeSend = web3.eth.getBalance(investor);
       await this.crowdsale.sendTransaction(
         { value: someOfEtherAmount, from: investor, gasPrice: 0 })
@@ -114,7 +116,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
   describe('token amount adjustments', () => {
     // Etherを受け取ってもfundが5000万枚持っているままである
     it('should fund has 50 million tokens even if received ether', async function () {
-      await advanceToBlock(this.startBlock - 1);
+      await increaseTimeTo(this.startTime);
       await this.crowdsale.send(someOfEtherAmount);
       const expect = ether(TestConstant.initialFundTokenAmount);
       const actual = await this.token.balanceOf(wallet);
@@ -124,7 +126,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     // initial + ( received ether * decimals ) = total supply
     // 50,000,000 + ( 41,666 * 1,200 ) = 99,999,200
     it('should total supply be 100 million tokens after received 41,666 ether', async function () {
-      await advanceToBlock(this.startBlock - 1);
+      await increaseTimeTo(this.startTime + duration.weeks(3));
       await this.crowdsale.send(ether(TestConstant.maxETH));
       const expect = ether(TestConstant.allTokenAmount).minus(ether(800));
       const actual = await this.token.totalSupply();
@@ -134,7 +136,8 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
   // トランザクションが送られる購入
   describe('high-level purchase', () => {
     beforeEach(async function () {
-      await advanceToBlock(this.startBlock);
+      await advanceBlock();
+      await increaseTimeTo(this.startTime + duration.weeks(3));
     });
 
     it('should log purchase', async function () {
@@ -171,7 +174,8 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
   // buyTokenで購入
   describe('low-level purchase', () => {
     beforeEach(async function () {
-      await advanceToBlock(this.startBlock);
+      await advanceBlock();
+      await increaseTimeTo(this.startTime + duration.weeks(3));
     });
 
     it('should log purchase', async function () {
@@ -210,7 +214,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet, purchaser]) => {
     it('should be ended only after end', async function () {
       let ended = await this.crowdsale.hasEnded();
       ended.should.equal(false);
-      await advanceToBlock(this.endBlock + 1);
+      await increaseTimeTo(this.afterEndTime);
       ended = await this.crowdsale.hasEnded();
       ended.should.equal(true);
     });

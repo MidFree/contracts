@@ -21,8 +21,8 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
   // The cap amount of MidFree tokens.
   uint256 public tokenCap;
 
-  function MidFreeCoinCrowdsale(uint256 _startBlock, uint256 _icoStartTime, uint256 _endBlock, uint256 _rate, address _wallet, uint256 _cap, uint256 _tokenCap, uint256 _initialMidFreeFundBalance, uint256 _goal, address[] _whiteList) 
-  Crowdsale(_startBlock, _endBlock, _rate, _wallet) 
+  function MidFreeCoinCrowdsale(uint256 _icoStartTime, uint256 _icoEndTime, uint256 _rate, address _wallet, uint256 _cap, uint256 _tokenCap, uint256 _initialMidFreeFundBalance, uint256 _goal, address[] _whiteList) 
+  Crowdsale(_icoStartTime, _icoEndTime, _rate, _wallet) 
   CappedCrowdsale(_cap)
   RefundableCrowdsale(_goal)
   WhitelistedCrowdsale(_whiteList)
@@ -117,13 +117,13 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
     if (isPresale()) {
       // before 2017/11/01 02:00 UTC
       currentRate = RATE_PRE_SALE;
-    } else if (now <= icoStartTime.add(1 weeks)) {
+    } else if (now < icoStartTime.add(1 weeks)) {
       // before 2017/11/08 02:00 UTC
       currentRate = RATE_WEEK_1;
-    } else if (now <= icoStartTime.add(2 weeks)) {
+    } else if (now < icoStartTime.add(2 weeks)) {
       // before 2017/11/15 02:00 UTC
       currentRate = RATE_WEEK_2;
-    } else if (now <= icoStartTime.add(3 weeks)) {
+    } else if (now < icoStartTime.add(3 weeks)) {
       // before 2017/11/21 02:00 UTC
       currentRate = RATE_WEEK_3;
     }
@@ -138,6 +138,6 @@ contract MidFreeCoinCrowdsale is CappedCrowdsale, RefundableCrowdsale, Whitelist
 
   // @return true if crowd sale is pre sale.
   function isPresale() internal constant returns (bool) {
-    return now <= icoStartTime;
+    return now < icoStartTime;
   }
 }

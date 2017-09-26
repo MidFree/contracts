@@ -23,6 +23,7 @@ export const MidFreeCoin = artifacts.require('MidFreeCoin.sol');
 export const MidFreeFund = artifacts.require('MidFreeFund.sol');
 export const MidFreeCoinCrowdsale = artifacts.require('MidFreeCoinCrowdsale.sol');
 export const icoStartTime = crowdsaleParams.icoStartTime;
+export const icoEndTime = crowdsaleParams.icoEndTime;
 export const cap = crowdsaleParams.cap;
 export const tokenCap = crowdsaleParams.tokenCap;
 export const rate = crowdsaleParams.rate;

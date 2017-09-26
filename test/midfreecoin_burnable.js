@@ -1,7 +1,10 @@
 import ether from '../utilities/ether';
+import { advanceBlock } from './helpers/advanceToBlock';
+import { duration } from './helpers/increaseTime';
+import latestTime from './helpers/latestTime';
 import EVMThrow from './helpers/EVMThrow';
 
-import { MidFreeCoin, MidFreeCoinCrowdsale, should, cap, tokenCap, rate, icoStartTime,
+import { MidFreeCoin, MidFreeCoinCrowdsale, should, cap, tokenCap, rate,
   initialMidFreeFundBalance, goal, whiteList, TestConstant,
 } from './helpers/midfree_helper';
 
@@ -9,11 +12,17 @@ contract('MidFreeCoin', ([wallet]) => {
   let token;
   const expectedTokenSupply = ether(49958334);
 
-  beforeEach(async function () {
-    this.startBlock = web3.eth.blockNumber + 10;
-    this.endBlock = web3.eth.blockNumber + 20;
+  before(async () => {
+    await advanceBlock();
+  });
 
-    this.crowdsale = await MidFreeCoinCrowdsale.new(this.startBlock, icoStartTime, this.endBlock,
+  beforeEach(async function () {
+    this.beforeStartTime = latestTime() + duration.weeks(1);
+    this.startTime = this.beforeStartTime + duration.weeks(1);
+    this.endTime = this.startTime + duration.weeks(4);
+    this.afterEndTime = this.endTime + duration.seconds(1);
+
+    this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
       rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList);
 
     token = MidFreeCoin.at(await this.crowdsale.token());

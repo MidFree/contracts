@@ -1,7 +1,6 @@
 {
-    "startBlock": 900000,
     "icoStartTime": 1512093600,
-    "endBlock": 1000000,
+    "icoEndTime": 1514512800,
     "cap": 41666,
     "tokenCap": 100000000,
     "initialMidfreeFundBalance": 50000000,

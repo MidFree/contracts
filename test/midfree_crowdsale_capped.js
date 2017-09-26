@@ -1,9 +1,11 @@
 import ether from '../utilities/ether';
-import advanceToBlock from './helpers/advanceToBlock';
+import { advanceBlock } from './helpers/advanceToBlock';
+import { increaseTimeTo, duration } from './helpers/increaseTime';
+import latestTime from './helpers/latestTime';
 import EVMThrow from './helpers/EVMThrow';
 
-import { MidFreeCoin, MidFreeCoinCrowdsale, icoStartTime, cap, tokenCap, rate, BigNumber,
-  initialMidFreeFundBalance, goal, whiteList, setTimingToBaseTokenRate, TestConstant,
+import { MidFreeCoin, MidFreeCoinCrowdsale, cap, tokenCap, rate, BigNumber,
+  initialMidFreeFundBalance, goal, whiteList, TestConstant,
 } from './helpers/midfree_helper';
 
 contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
@@ -16,18 +18,20 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
 
   // Token cap of ether - ( Token cap / 100 ) / rate = Threshold of ether
   // 125000 - ((500000000 / 100) / 2000) = 122,500
-  // 33333 - ((100000000/100)/500) =31333
-  const thresholdOfEther = ether(31333);
+  // 41666 - ((100000000/100)/1200) =40832
+  const thresholdOfEther = ether(40834);
 
   before(async () => {
-    await setTimingToBaseTokenRate();
+    await advanceBlock();
   });
 
   beforeEach(async function () {
-    this.startBlock = web3.eth.blockNumber + 10;
-    this.endBlock = web3.eth.blockNumber + 20;
+    this.beforeStartTime = latestTime() + duration.weeks(1);
+    this.startTime = this.beforeStartTime + duration.weeks(1);
+    this.endTime = this.startTime + duration.weeks(4);
+    this.afterEndTime = this.endTime + duration.seconds(1);
 
-    this.crowdsale = await MidFreeCoinCrowdsale.new(this.startBlock, icoStartTime, this.endBlock,
+    this.crowdsale = await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
       rate.base, wallet, ether(cap), ether(tokenCap), initialMidFreeFundBalance, ether(goal), whiteList);
 
     this.token = MidFreeCoin.at(await this.crowdsale.token());
@@ -37,7 +41,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
   describe('creating a valid capped crowdsale', () => {
     // 0でキャップするとエラーになること
     it('should fail with zero cap', async function () {
-      await MidFreeCoinCrowdsale.new(this.startBlock, icoStartTime, this.endBlock,
+      await MidFreeCoinCrowdsale.new(this.startTime, this.endTime,
         rate.base, wallet, 0, initialMidFreeFundBalance, ether(goal), whiteList)
         .should.be.rejectedWith(EVMThrow);
     });
@@ -58,7 +62,8 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
   // 上限での送金の受け取り
   describe('accepting payments with cap', () => {
     beforeEach(async function () {
-      await advanceToBlock(this.startBlock - 1);
+      // base rateでチェックするために最終週で設定する
+      await increaseTimeTo(this.startTime + duration.weeks(3));
     });
     // 上限内なら送金可能
     it('should accept payments within cap', async function () {
@@ -115,7 +120,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
   // 上限値での送金の受け取り
   describe('accepting payments with token cap', () => {
     beforeEach(async function () {
-      await advanceToBlock(this.startBlock - 1);
+      await increaseTimeTo(this.startTime + duration.weeks(3));
     });
     // トークン数的な上限より少ない送金を受け取る
     it('should accept payments within token cap', async function () {
@@ -169,7 +174,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
   // 上限に達して終了するテスト
   describe('ending with cap', () => {
     beforeEach(async function () {
-      await advanceToBlock(this.startBlock - 1);
+      await increaseTimeTo(this.startTime + duration.weeks(3));
     });
     // 上限到達していないと終了しない
     it('should not be ended if under cap', async function () {
@@ -189,7 +194,7 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
   // トークン数の上限で終了する
   describe('ending with token cap', () => {
     beforeEach(async function () {
-      await advanceToBlock(this.startBlock - 1);
+      await increaseTimeTo(this.startTime + duration.weeks(3));
     });
     // トークン上限のしきい値以下ではまだ終わらない
     it('should not be ended if under token cap threshold', async function () {
@@ -202,7 +207,6 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
     // トークン上限しきい値の前では直ちに終わらない
     it('should not be ended even if immediately before token cap threshold', async function () {
       await this.crowdsale.send(thresholdOfEther.minus(ether(1)));
-
 
       const hasEnded = await this.crowdsale.hasEnded();
       hasEnded.should.equal(false);

@@ -1,7 +1,12 @@
 import { MidFreeCoin } from './helpers/midfree_helper';
+import { advanceBlock } from './helpers/advanceToBlock';
 
 contract('MidFreeCoin', (accounts) => {
   let token;
+
+  before(async () => {
+    await advanceBlock();
+  });
 
   beforeEach(async () => {
     token = await MidFreeCoin.new();
