@@ -3,7 +3,7 @@
     "icoEndTime": 1514512800,
     "cap": 41666,
     "tokenCap": 100000000,
-    "initialMidfreeFundBalance": 50000000,
+    "initialMidFreeFundBalance": 50000000,
     "goal": 7500,
     "rate": {
       "base": 1200

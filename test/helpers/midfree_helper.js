@@ -27,7 +27,7 @@ export const icoEndTime = crowdsaleParams.icoEndTime;
 export const cap = crowdsaleParams.cap;
 export const tokenCap = crowdsaleParams.tokenCap;
 export const rate = crowdsaleParams.rate;
-export const initialMidFreeFundBalance = ether(crowdsaleParams.initialMidfreeFundBalance);
+export const initialMidFreeFundBalance = ether(crowdsaleParams.initialMidFreeFundBalance);
 export const goal = new BigNumber(crowdsaleParams.goal);
 
 // Set time to token sale start time.

@@ -171,6 +171,51 @@ contract('MidFreeCoinCrowdsale', ([investor, wallet]) => {
       await totalSupply.should.be.bignumber.equal(ether(TestConstant.allTokenAmount).minus(ether(800)));
     });
   });
+  // 配布上限値での受け取り
+  describe('accepting payments with distribute token cap', () => {
+    // 1週目、5000万枚以内は受け取れる
+    it('should accept payment within distribute 50,000,000 token in the 1 week', async function () {
+      // 50,000,000 / 1,500 = 33,333
+      await increaseTimeTo(this.startTime);
+      const maxEther = 33333;
+      await this.crowdsale.send(ether(maxEther)).should.be.fulfilled;
+    });
+    // 5000万枚を超えると受け取れない
+    it('should reject payments outside distribute token cap in the 1 week', async function () {
+      await increaseTimeTo(this.startTime);
+      const maxEther = 33333;
+      await this.crowdsale.send(ether(maxEther));
+      await this.crowdsale.send(ether(1)).should.be.rejectedWith(EVMThrow);
+    });
+    // 2週目、5000万枚以内は受け取れる
+    it('should accept payment within distribute 50,000,000 token in the 2 week', async function () {
+      // 50,000,000 / 1,400 = 35,714.2
+      await increaseTimeTo(this.startTime + duration.weeks(1));
+      const maxEther = 35714;
+      await this.crowdsale.send(ether(maxEther)).should.be.fulfilled;
+    });
+    // 5000万枚を超えると受け取れない
+    it('should reject payments outside distribute token cap in the 2 week', async function () {
+      await increaseTimeTo(this.startTime + duration.weeks(1));
+      const maxEther = 35714;
+      await this.crowdsale.send(ether(maxEther));
+      await this.crowdsale.send(ether(1)).should.be.rejectedWith(EVMThrow);
+    });
+    // 3週目、5000万枚以内は受け取れる
+    it('should accept payment within distribute 50,000,000 token in the 3 week', async function () {
+      // 50,000,000 / 1,300 = 38,461.5
+      await increaseTimeTo(this.startTime + duration.weeks(2));
+      const maxEther = 38461;
+      await this.crowdsale.send(ether(maxEther)).should.be.fulfilled;
+    });
+    // 5000万枚を超えると受け取れない
+    it('should reject payments outside distribute token cap in the 3 week', async function () {
+      await increaseTimeTo(this.startTime + duration.weeks(2));
+      const maxEther = 38461;
+      await this.crowdsale.send(ether(maxEther));
+      await this.crowdsale.send(ether(1)).should.be.rejectedWith(EVMThrow);
+    });
+  });
   // 上限に達して終了するテスト
   describe('ending with cap', () => {
     beforeEach(async function () {
