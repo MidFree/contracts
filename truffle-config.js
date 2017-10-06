@@ -24,5 +24,13 @@ module.exports = {
       gas: 4400000,
       gasPrice: 2100000000000,
     },
+    rinkeby: {
+      host: 'localhost', // Connect to geth on the specified
+      port: 8545,
+      from: '0x8ebCf0196E689377C01f64D27e8F96028b21a47a', // default address to use for any transaction Truffle makes during migrations
+      network_id: 4,
+      gas: 4400000,
+      gasPrice: 2100000000000,
+    },
   },
 };
